@@ -50,6 +50,9 @@ bool parsePose(Pose &pose, tinyxml2::XMLElement* xml);
 // function to parse a static object in this world. defined in graphics.cpp
 void parseStaticObject(my_shared_ptr<StaticObject>& object, tinyxml2::XMLElement* xml);
 
+// function to parse a static object in this world. defined in graphics.cpp
+void parseDynamicObject(my_shared_ptr<DynamicObject>& object, tinyxml2::XMLElement* xml);
+
 // function to parse a light in this world. defined in graphics.cpp
 void parseLight(my_shared_ptr<Light>& light, tinyxml2::XMLElement* xml);
 
@@ -138,6 +141,17 @@ my_shared_ptr<World> parseURDFWorld(const std::string &xml_string)
 		assert(!world->graphics_.getStaticObject(object->name));
 		world->graphics_.static_objects.insert(make_pair(object->name, object));
 		logDebug("urdfdom: successfully parsed a new static object in the world '%s'", object->name.c_str());
+	}
+
+	// get all dynamic objects elements
+	for (tinyxml2::XMLElement* object_xml = world_xml->FirstChildElement("dynamic_object"); object_xml; object_xml = object_xml->NextSiblingElement("dynamic_object"))
+	{
+		my_shared_ptr<DynamicObject> object(new DynamicObject);
+		parseDynamicObject(object, object_xml);
+		// ensure no duplication of object names
+		assert(!world->graphics_.getDynamicObject(object->name));
+		world->graphics_.dynamic_objects.insert(make_pair(object->name, object));
+		logDebug("urdfdom: successfully parsed a new dynamic object in the world '%s'", object->name.c_str());
 	}
 
 	// get all graphics elements: lights

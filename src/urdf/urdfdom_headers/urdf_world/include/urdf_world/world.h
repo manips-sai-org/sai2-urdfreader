@@ -124,6 +124,43 @@ public:
   }
 };
 
+// dynamic object class
+class DynamicObject
+{
+public:
+  DynamicObject() {this->clear();}
+  // name
+  std::string name;
+
+  /// position and orientation in world
+  Pose origin;
+
+  /// inertial element
+  my_shared_ptr<Inertial> inertial;
+
+  /// visual element
+  my_shared_ptr<Visual> visual;
+
+  /// collision element
+  my_shared_ptr<Collision> collision;
+
+  /// if more than one collision element is specified, all collision elements are placed in this array (the collision member points to the first element of the array)
+  std::vector<my_shared_ptr<Collision> > collision_array;
+
+  /// if more than one visual element is specified, all visual elements are placed in this array (the visual member points to the first element of the array)
+  std::vector<my_shared_ptr<Visual> > visual_array;
+
+  void clear() {
+    name.clear();
+    origin.clear();
+    inertial.reset(0);
+    visual.reset(0);
+    collision.reset(0);
+    visual_array.clear();
+    collision_array.clear();
+  }
+};
+
 // graphics class
 class Graphics
 {
@@ -154,6 +191,20 @@ public:
     }
     else {
       ptr = static_objects.find(name)->second;
+    }
+    return ptr;
+  };
+
+  // vector of dynamic objects in this world
+  std::map<std::string, my_shared_ptr<DynamicObject>> dynamic_objects;
+  my_shared_ptr<DynamicObject> getDynamicObject(const std::string& name)
+  {
+    my_shared_ptr<DynamicObject> ptr;
+    if (dynamic_objects.find(name) == dynamic_objects.end()) {
+      ptr.reset(0);
+    }
+    else {
+      ptr = dynamic_objects.find(name)->second;
     }
     return ptr;
   };

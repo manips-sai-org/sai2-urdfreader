@@ -24,6 +24,9 @@ bool parseCollision(Collision &col, tinyxml2::XMLElement* config);
 // function to parse visuals. defined in link.cpp
 bool parseVisual(Visual &vis, tinyxml2::XMLElement *config);
 
+// function to parse inertial properties. defined in link.cpp
+bool parseInertial(Inertial &i, tinyxml2::XMLElement *config);
+
 void parseLight(my_shared_ptr<Light>& light, tinyxml2::XMLElement* xml) {
 	// get name
 	const char *name = xml->Attribute("name");
@@ -90,6 +93,64 @@ void parseStaticObject(my_shared_ptr<StaticObject>& object, tinyxml2::XMLElement
 	tinyxml2::XMLElement* pose_xml = xml->FirstChildElement("origin");
 	bool success = parsePose(object->origin, pose_xml);
 	assert(success);
+
+	// Multiple Visuals (optional)
+	for (tinyxml2::XMLElement* vis_xml = xml->FirstChildElement("visual"); vis_xml; vis_xml = vis_xml->NextSiblingElement("visual"))
+	{
+		my_shared_ptr<Visual> vis;
+		vis.reset(new Visual());
+		bool success = parseVisual(*vis, vis_xml);
+		assert(success);
+		object->visual_array.push_back(vis);
+	}
+
+	// Visual (optional)
+	// Assign the first visual to the .visual ptr, if it exists
+	if (!object->visual_array.empty()) {
+		object->visual = object->visual_array[0];
+	}
+
+	// Multiple Collisions (optional)
+	for (tinyxml2::XMLElement* col_xml = xml->FirstChildElement("collision"); col_xml; col_xml = col_xml->NextSiblingElement("collision"))
+	{
+		my_shared_ptr<Collision> col;
+		col.reset(new Collision());
+		bool success = parseCollision(*col, col_xml);
+		assert(success);
+		object->collision_array.push_back(col);
+	}
+
+	// Collision (optional) 
+	// Assign the first collision to the .collision ptr, if it exists
+	if (!object->collision_array.empty()) {
+		object->collision = object->collision_array[0];
+	}
+}
+
+void parseDynamicObject(my_shared_ptr<DynamicObject>& object, tinyxml2::XMLElement* xml) {
+	object->clear();
+
+	// parse name
+	const char *name = xml->Attribute("name");
+	assert(name);
+	object->name = std::string(name);
+
+	// parse pose
+	tinyxml2::XMLElement* pose_xml = xml->FirstChildElement("origin");
+	bool success = parsePose(object->origin, pose_xml);
+	assert(success);
+
+	// Inertial (optional)
+	tinyxml2::XMLElement *i = xml->FirstChildElement("inertial");
+	if (i)
+	{
+		object->inertial.reset(new Inertial());
+		if (!parseInertial(*object->inertial, i))
+		{
+			logError("Could not parse inertial element for object [%s]", object->name.c_str());
+			return;
+		}
+	}
 
 	// Multiple Visuals (optional)
 	for (tinyxml2::XMLElement* vis_xml = xml->FirstChildElement("visual"); vis_xml; vis_xml = vis_xml->NextSiblingElement("visual"))

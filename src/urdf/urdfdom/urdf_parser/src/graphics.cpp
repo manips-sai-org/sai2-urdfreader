@@ -140,8 +140,14 @@ void parseDynamicObject(my_shared_ptr<DynamicObject>& object, tinyxml2::XMLEleme
 	bool success = parsePose(object->origin, pose_xml);
 	assert(success);
 
-	// Inertial (optional)
+	// Inertial
 	tinyxml2::XMLElement *i = xml->FirstChildElement("inertial");
+	// assert(i && "There is no inertial element for object " && object->name.c_str());
+	if(!i)
+	{
+		logError("ERROR : there is no inertial element for object [%s]", object->name.c_str());
+		exit(0);
+	}
 	if (i)
 	{
 		object->inertial.reset(new Inertial());
@@ -151,6 +157,11 @@ void parseDynamicObject(my_shared_ptr<DynamicObject>& object, tinyxml2::XMLEleme
 			return;
 		}
 	}
+	// else
+	// {
+		// logError("There is no inertial element for object [%s]", object->name.c_str());
+		// return;
+	// }
 
 	// Multiple Visuals (optional)
 	for (tinyxml2::XMLElement* vis_xml = xml->FirstChildElement("visual"); vis_xml; vis_xml = vis_xml->NextSiblingElement("visual"))

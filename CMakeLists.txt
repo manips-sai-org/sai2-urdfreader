@@ -5,6 +5,9 @@ SET (PROJECT_VERSION 0.1.0)# TODO: minor version bump after examples are finishe
 
 SET(CMAKE_CXX_FLAGS "-std=c++11 -I/usr/include -I/usr/local/include -fPIC")
 
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # set default build to release with debug info. mimic'ed from RBDL project.
 IF(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	MESSAGE(STATUS "Setting build type to 'RelWithDebInfo' as none was specified.")

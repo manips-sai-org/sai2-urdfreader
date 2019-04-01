@@ -17,9 +17,6 @@ SET (SAI2-URDF_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/src
 	${PROJECT_SOURCE_DIR}/src/urdf/urdfdom/urdf_parser/include
 	)
 
-# include tinyxml2
-set(TINYXML_LOCAL_DIR ${PROJECT_SOURCE_DIR}/tinyxml2)
-set(TINYXML_INCLUDE_DIR ${TINYXML_LOCAL_DIR})
 
 # include urdf, compiled with application
 SET(URDF_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src)
@@ -37,15 +34,15 @@ SET(URDF_SOURCE ${URDF_INCLUDE_SUB_DIR}/urdfdom/urdf_parser/src/pose.cpp
 # Add the include directory to the include paths
 INCLUDE_DIRECTORIES (
 	${URDF_INCLUDE_DIR}
-	${TINYXML_INCLUDE_DIR}
 )
 
 # Create the library
 ADD_LIBRARY (sai2-urdf STATIC
 	${URDF_SOURCE}
 )
+# include tinyxml2
+FIND_LIBRARY(TINYXML_LIBRARIES tinyxml2)
 
-FIND_LIBRARY(TINYXML_LIBRARIES tinyxml2 PATHS ${TINYXML_LOCAL_DIR}/build NO_DEFAULT_PATH)
 SET (SAI2-URDF_LIBRARIES sai2-urdf
 	${TINYXML_LIBRARIES}
 )

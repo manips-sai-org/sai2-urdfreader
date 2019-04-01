@@ -58,8 +58,7 @@ my_shared_ptr<ModelInterface>  parseURDF(const std::string &xml_string)
   xml_doc.Parse(xml_string.c_str());
   if (xml_doc.Error())
   {
-    logError(xml_doc.GetErrorStr1());
-    xml_doc.SetError(tinyxml2::XML_SUCCESS, 0, 0);
+    logError(xml_doc.ErrorStr());
     model.reset(0);
     return model;
   }

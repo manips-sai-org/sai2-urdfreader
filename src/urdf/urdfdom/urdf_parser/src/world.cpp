@@ -100,7 +100,7 @@ my_shared_ptr<World> parseURDFWorld(const std::string &xml_string)
 	xml_doc.Parse(xml_string.c_str());
 	if (xml_doc.Error())
 	{
-		logError(xml_doc.GetErrorStr1());
+		logError(xml_doc.ErrorStr());
 	    assert(0);
 	}
 

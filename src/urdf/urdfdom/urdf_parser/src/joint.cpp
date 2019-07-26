@@ -460,6 +460,8 @@ bool parseJoint(Joint &joint, tinyxml2::XMLElement* config)
     joint.type = Joint::FLOATING;
   else if (type_str == "revolute")
     joint.type = Joint::REVOLUTE;
+  else if (type_str == "spherical")
+    joint.type = Joint::SPHERICAL;
   else if (type_str == "continuous")
     joint.type = Joint::CONTINUOUS;
   else if (type_str == "prismatic")
@@ -473,7 +475,7 @@ bool parseJoint(Joint &joint, tinyxml2::XMLElement* config)
   }
 
   // Get Joint Axis
-  if (joint.type != Joint::FLOATING && joint.type != Joint::FIXED)
+  if (joint.type != Joint::FLOATING && joint.type != Joint::FIXED && joint.type != Joint::SPHERICAL)
   {
     // axis
     tinyxml2::XMLElement *axis_xml = config->FirstChildElement("axis");

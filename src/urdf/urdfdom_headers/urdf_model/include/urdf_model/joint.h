@@ -177,7 +177,7 @@ public:
   std::string name;
   enum
   {
-    UNKNOWN, REVOLUTE, CONTINUOUS, PRISMATIC, FLOATING, PLANAR, FIXED
+    UNKNOWN, REVOLUTE, SPHERICAL, CONTINUOUS, PRISMATIC, FLOATING, PLANAR, FIXED
   } type;
 
   /// \brief     type_       meaning of axis_
@@ -186,6 +186,7 @@ public:
   ///            REVOLUTE    rotation axis
   ///            PRISMATIC   translation axis
   ///            FLOATING    N/A
+  ///            SPHERICAL   N/A
   ///            PLANAR      plane normal axis
   ///            FIXED       N/A
   Vector3 axis;

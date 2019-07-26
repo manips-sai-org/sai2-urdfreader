@@ -23,6 +23,13 @@
             </geometry>
         </collision>
     </link>
+    <link name="link1">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+            <mass value="1" />
+            <inertia ixx="0.1" iyy="0.1" izz="0.1" ixy="0" ixz="0" iyz="0" />
+        </inertial>
+    </link>
     
     <joint name="j0" type="prismatic">
         <parent link="base_link" />
@@ -30,6 +37,11 @@
         <origin xyz="0.000000 0.000000 3.000000" rpy="-0.000000 0.000000 -0.000000" />
         <axis xyz="0 0 1" />
         <limit lower="-2.967" upper="2.967" effort="176" velocity="1.7104" />
+    </joint>
+    <joint name="sj1" type="spherical">
+        <parent link="link0" />
+        <child link="link1" />
+        <origin xyz="0.000000 0.000000 3.000000" rpy="-0.000000 0.000000 -0.000000" />
     </joint>
     
 </robot>

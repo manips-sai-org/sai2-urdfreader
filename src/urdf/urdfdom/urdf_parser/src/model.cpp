@@ -189,6 +189,7 @@ my_shared_ptr<ModelInterface>  parseURDF(const std::string &xml_string)
       else
       {
         model->joints_.insert(make_pair(joint->name,joint));
+        model->joints_ordered_.push_back(joint->name);
         logDebug("urdfdom: successfully added a new joint '%s'", joint->name.c_str());
       }
     }

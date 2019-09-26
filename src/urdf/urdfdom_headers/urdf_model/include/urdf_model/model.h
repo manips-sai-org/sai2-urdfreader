@@ -116,10 +116,11 @@ public:
   void initTree(std::map<std::string, std::string> &parent_link_tree)
   {
     // loop through all joints, for every link, assign children links and children joints
-    for (std::map<std::string,my_shared_ptr<Joint> >::iterator joint = this->joints_.begin();joint != this->joints_.end(); joint++)
+    for (std::vector<std::string>::iterator joint_itr = this->joints_ordered_.begin();joint_itr != this->joints_ordered_.end(); joint_itr++)
     {
-      std::string parent_link_name = joint->second->parent_link_name;
-      std::string child_link_name = joint->second->child_link_name;
+      std::string joint_name = *joint_itr;
+      std::string parent_link_name = this->joints_[joint_name]->parent_link_name;
+      std::string child_link_name = this->joints_[joint_name]->child_link_name;
       
       if (parent_link_name.empty() || child_link_name.empty())
       {
@@ -134,7 +135,7 @@ public:
         this->getLink(child_link_name, child_link);
         if (!child_link)
         {
-			printf("Error: child link [%s] of joint [%s] not found\n", child_link_name.c_str(),joint->first.c_str() );
+			printf("Error: child link [%s] of joint [%s] not found\n", child_link_name.c_str(),(joint_name).c_str() );
 			assert(0);
 //          throw ParseError("child link [" + child_link_name + "] of joint [" + joint->first + "] not found");
         }
@@ -151,10 +152,10 @@ public:
         child_link->setParent(parent_link);
 
         //set parent joint for child link        
-        child_link->parent_joint = joint->second;
+        child_link->parent_joint = this->joints_[joint_name];
         
         //set child joint for parent link
-        parent_link->child_joints.push_back(joint->second);
+        parent_link->child_joints.push_back(this->joints_[joint_name]);
 
         //set child link for parent link
         parent_link->child_links.push_back(child_link);
@@ -200,6 +201,8 @@ public:
   std::map<std::string, my_shared_ptr<Link> > links_;
   /// \brief complete list of Joints
   std::map<std::string, my_shared_ptr<Joint> > joints_;
+  /// \brief ordered list of joint names
+  std::vector<std::string> joints_ordered_;
   /// \brief complete list of Materials
   std::map<std::string, my_shared_ptr<Material> > materials_;
 

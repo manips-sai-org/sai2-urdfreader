@@ -204,6 +204,46 @@ bool parseCylinder(Cylinder &y, tinyxml2::XMLElement *c)
   return true;
 }
 
+bool parseCapsule(Capsule &y, tinyxml2::XMLElement *c)
+{
+  y.clear();
+
+  y.type = Geometry::CAPSULE;
+  if (!c->Attribute("length") ||
+      !c->Attribute("radius"))
+  {
+    logError("Capsule shape must have both length and radius attributes");
+    return false;
+  }
+
+  try
+  {
+    y.length = boost::lexical_cast<double>(c->Attribute("length"));
+  }
+  catch (boost::bad_lexical_cast &e)
+  {
+  //  std::stringstream stm;
+   // stm << "length [" << c->Attribute("length") << "] is not a valid float";
+    //logError(stm.str().c_str());
+      logError("length");
+      return false;
+  }
+
+  try
+  {
+    y.radius = boost::lexical_cast<double>(c->Attribute("radius"));
+  }
+  catch (boost::bad_lexical_cast &e)
+  {
+ //   std::stringstream stm;
+   // stm << "radius [" << c->Attribute("radius") << "] is not a valid float";
+    //logError(stm.str().c_str());
+      logError("radius");
+      return false;
+  }
+  return true;
+}
+
 
 bool parseMesh(Mesh &m, tinyxml2::XMLElement *c)
 {
@@ -266,6 +306,13 @@ my_shared_ptr<Geometry> parseGeometry(tinyxml2::XMLElement *g)
     Cylinder *c = new Cylinder();
     geom.reset(c);
     if (parseCylinder(*c, shape))
+      return geom;
+  }
+  else if (type_name == "capsule")
+  {
+    Capsule *c = new Capsule();
+    geom.reset(c);
+    if (parseCapsule(*c, shape))
       return geom;
   }
   else if (type_name == "mesh")

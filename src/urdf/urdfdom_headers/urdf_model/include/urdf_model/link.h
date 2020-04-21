@@ -58,7 +58,7 @@ namespace urdf{
 class Geometry
 {
 public:
-  enum {SPHERE, BOX, CYLINDER, MESH} type;
+  enum {SPHERE, BOX, CYLINDER, CAPSULE, MESH} type;
 
   virtual ~Geometry(void)
   {
@@ -94,6 +94,20 @@ class Cylinder : public Geometry
 public:
   Cylinder() { this->clear(); type = CYLINDER; };
   double length;
+  double radius;
+
+  void clear()
+  {
+    length = 0;
+    radius = 0;
+  };
+};
+
+class Capsule : public Geometry
+{
+public:
+  Capsule() { this->clear(); type = CAPSULE; };
+  double length; // length from center of one end to center of other end
   double radius;
 
   void clear()

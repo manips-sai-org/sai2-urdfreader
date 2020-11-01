@@ -141,12 +141,16 @@ public:
   std::string name;
   std::string texture_filename;
   Color color;
+  bool has_color2;
+  Color color2;
 
   void clear()
   {
     color.clear();
+    color2.clear();
     texture_filename.clear();
     name.clear();
+    has_color2 = false;
   };
 };
 

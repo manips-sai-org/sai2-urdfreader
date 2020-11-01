@@ -99,6 +99,18 @@ bool parseMaterial(Material &material, tinyxml2::XMLElement *config, bool only_n
         material.color.clear();
         logError(std::string("Material [" + material.name + "] has malformed color rgba values: " + e.what()).c_str());
       }
+      tinyxml2::XMLElement *c2 = c->NextSiblingElement("color");
+      if (c2 && c2->Attribute("rgba")) {
+        try {
+          material.color2.init(c2->Attribute("rgba"));
+          material.has_color2 = true;
+          has_rgb = true;
+        }
+        catch (ParseError &e) {
+          material.color2.clear();
+          logError(std::string("Material [" + material.name + "] has malformed color2 rgba values: " + e.what()).c_str());
+        }
+      }
     }
   }
 

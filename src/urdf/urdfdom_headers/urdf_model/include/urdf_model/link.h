@@ -58,7 +58,7 @@ namespace urdf{
 class Geometry
 {
 public:
-  enum {SPHERE, BOX, CYLINDER, CAPSULE, MESH} type;
+  enum {SPHERE, BOX, CYLINDER, CAPSULE, PYRAMID, MESH} type;
 
   virtual ~Geometry(void)
   {
@@ -114,6 +114,24 @@ public:
   {
     length = 0;
     radius = 0;
+  };
+};
+
+class Pyramid : public Geometry
+{
+public:
+  Pyramid() { this->clear(); type = PYRAMID; };
+  int num_sides; // number of base edges
+  double base_size; // length of each base edge
+  double height; // height from center of base to apex
+  bool use_center_vertex; // this controls the mesh generation
+
+  void clear()
+  {
+    num_sides = 3;
+    base_size = 0;
+    height = 0;
+    use_center_vertex = false;
   };
 };
 

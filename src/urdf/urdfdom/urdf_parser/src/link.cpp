@@ -256,6 +256,68 @@ bool parseCapsule(Capsule &y, tinyxml2::XMLElement *c)
   return true;
 }
 
+bool parsePyramid(Pyramid &y, tinyxml2::XMLElement *c)
+{
+  y.clear();
+
+  y.type = Geometry::PYRAMID;
+  if (!c->Attribute("num_sides") ||
+      !c->Attribute("base_size") ||
+      !c->Attribute("height"))
+  {
+    logError("Pyramid shape must have num_sides, base_size and height attributes");
+    return false;
+  }
+
+  try
+  {
+    y.num_sides = boost::lexical_cast<int>(c->Attribute("num_sides"));
+    if(y.num_sides < 3) {
+      logError("Pyramid shape must have num_sides >= 3");
+      return false;
+    }
+  }
+  catch (boost::bad_lexical_cast &e)
+  {
+      logError("num_sides");
+      return false;
+  }
+
+  try
+  {
+    y.height = boost::lexical_cast<double>(c->Attribute("height"));
+  }
+  catch (boost::bad_lexical_cast &e)
+  {
+      logError("height");
+      return false;
+  }
+
+  try
+  {
+    y.base_size = boost::lexical_cast<double>(c->Attribute("base_size"));
+  }
+  catch (boost::bad_lexical_cast &e)
+  {
+      logError("base_size");
+      return false;
+  }
+
+  if(c->Attribute("use_center_vertex")) {
+    try
+    {
+      y.use_center_vertex = boost::lexical_cast<bool>(c->Attribute("use_center_vertex"));
+    }
+    catch (boost::bad_lexical_cast &e)
+    {
+        logError("use_center_vertex");
+        return false;
+    }
+  }
+
+  return true;
+}
+
 
 bool parseMesh(Mesh &m, tinyxml2::XMLElement *c)
 {
@@ -325,6 +387,13 @@ my_shared_ptr<Geometry> parseGeometry(tinyxml2::XMLElement *g)
     Capsule *c = new Capsule();
     geom.reset(c);
     if (parseCapsule(*c, shape))
+      return geom;
+  }
+  else if (type_name == "pyramid")
+  {
+    Pyramid *c = new Pyramid();
+    geom.reset(c);
+    if (parsePyramid(*c, shape))
       return geom;
   }
   else if (type_name == "mesh")

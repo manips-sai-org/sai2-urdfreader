@@ -1,0 +1,26 @@
+name: Build and Archive
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build
+      run: |
+        sudo apt-get install libtinyxml2-dev
+        mkdir build && cd build
+        cmake .. && make -j8
+    
+    - name: Archive Sai2-urdfreader Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: sai2-urdfreader-artifact
+        path: build/libsai2-urdf.a

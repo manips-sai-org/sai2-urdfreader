@@ -1,0 +1,20 @@
+name: Build master and upload artifact on a schedule
+
+on:
+  schedule:
+    - cron: "0 0 1 * *"
+      branches: [ "master" ]
+
+jobs:
+  call-build-workflow:
+    uses: ./.github/workflows/build_and_test.yml
+
+  upload-artifact:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Archive Sai2-urdfreader Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: sai2-urdfreader-artifact
+        path: build/libsai2-urdf.a

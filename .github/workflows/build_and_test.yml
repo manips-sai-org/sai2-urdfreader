@@ -1,10 +1,7 @@
-name: Build and Archive
+name: Build and Test
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  workflow_call:
 
 jobs:
   build:
@@ -18,9 +15,3 @@ jobs:
         sudo apt-get install libtinyxml2-dev
         mkdir build && cd build
         cmake .. && make -j8
-    
-    - name: Archive Sai2-urdfreader Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: sai2-urdfreader-artifact
-        path: build/libsai2-urdf.a

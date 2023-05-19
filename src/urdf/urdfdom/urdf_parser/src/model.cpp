@@ -60,7 +60,7 @@ my_shared_ptr<ModelInterface>  parseURDF(const std::string &xml_string)
   {
     logError(xml_doc.ErrorStr());
     model.reset(0);
-    return model
+    return model; // PR that passes checks
   }
 
   tinyxml2::XMLElement *robot_xml = xml_doc.FirstChildElement("robot");

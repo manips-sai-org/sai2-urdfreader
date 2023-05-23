@@ -1,0 +1,21 @@
+name: 'Build'
+description: 'Builds the repository'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      shell: bash
+      run: sudo apt-get install libtinyxml2-dev
+
+    - name: Build
+      shell: bash
+      run: |
+        mkdir build && cd build
+        cmake .. && make -j8
+
+    - name: Check build status
+      shell: bash
+      run: |
+        cd build
+        make --always-make --dry-run

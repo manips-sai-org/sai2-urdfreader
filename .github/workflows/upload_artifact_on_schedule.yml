@@ -7,15 +7,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-build-workflow:
-    uses: ./.github/workflows/build_and_test.yml
-
-  upload-artifact:
+  build-and-archive:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Archive Sai2-urdfreader Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: sai2-urdfreader-artifact
-        path: build/libsai2-urdf.a
+      - name: checkout-repo
+        uses: actions/checkout@v3
+
+      - name: build-repo
+        uses: ./.github/actions/build-repo
+        with: 
+          token: ${{ secrets.SAI2_TOKEN }}
+
+      - name: Archive Sai2-urdfreader Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sai2-urdfreader-artifact
+          path: build/libsai2-urdf.a

@@ -15,8 +15,6 @@ jobs:
 
       - name: build-repo
         uses: ./.github/actions/build-repo
-        with: 
-          token: ${{ secrets.SAI2_TOKEN }}
 
       - name: Archive Sai2-urdfreader Artifact
         uses: actions/upload-artifact@v3

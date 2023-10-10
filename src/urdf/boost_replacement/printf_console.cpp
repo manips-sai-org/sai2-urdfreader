@@ -10,11 +10,15 @@ void logError(const char* msg, const char* arg0, const char* arg1, const char* a
 	
 void logDebug(const char* msg, float v0, float v1)
 {
+#ifdef ENABLE_DEBUG_PRINTS 
 	std::cerr << msg << " " << v0 << " " << v1 << std::endl;
+#endif
 };
 void logDebug(const char* msg, const char* msg1, const char* arg1)
 {
+#ifdef ENABLE_DEBUG_PRINTS
 	std::cerr << msg << " " << msg1 << " " << arg1 << std::endl;
+#endif
 }
 
 void logInform(const char* msg, const char* arg0)

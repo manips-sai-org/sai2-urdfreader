@@ -13,10 +13,13 @@ IF(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	SET_PROPERTY(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 ENDIF()
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    add_compile_definitions(ENABLE_DEBUG_PRINTS)
+endif()
+
 SET (SAI2-URDF_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/src
 	${PROJECT_SOURCE_DIR}/src/urdf/urdfdom/urdf_parser/include
 	)
-
 
 # include urdf, compiled with application
 SET(URDF_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src)

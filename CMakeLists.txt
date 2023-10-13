@@ -1,9 +1,13 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 
 PROJECT (SAI2-URDF)
-SET (PROJECT_VERSION 0.1.0)# TODO: minor version bump after examples are finished since we moved from sai2-common
+SET (PROJECT_VERSION 0.1.0)
 
-SET(CMAKE_CXX_FLAGS "-std=c++11 -I/usr/include -I/usr/local/include -fPIC")
+if (${CMAKE_SYSTEM_NAME} MATCHES Linux)
+	SET(CMAKE_CXX_FLAGS "-std=c++11 -I/usr/include -I/usr/local/include -fPIC")
+elseif (${CMAKE_SYSTEM_NAME} MATCHES Darwin)
+	SET(CMAKE_CXX_FLAGS "-std=c++11 -I/usr/include -I/usr/local/include -I/opt/homebrew/include -fPIC")
+endif ()
 
 # set default build to release with debug info. mimic'ed from RBDL project.
 IF(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)

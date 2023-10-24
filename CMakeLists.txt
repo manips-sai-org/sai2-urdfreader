@@ -1,12 +1,11 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 PROJECT (SAI2-URDF)
 SET (PROJECT_VERSION 0.1.0)
 
-if (${CMAKE_SYSTEM_NAME} MATCHES Linux)
-	SET(CMAKE_CXX_FLAGS "-std=c++11 -I/usr/include -I/usr/local/include -fPIC")
-elseif (${CMAKE_SYSTEM_NAME} MATCHES Darwin)
-	SET(CMAKE_CXX_FLAGS "-std=c++11 -I/usr/include -I/usr/local/include -I/opt/homebrew/include -fPIC")
+SET(CMAKE_CXX_FLAGS "-std=c++11 -I/usr/include -I/usr/local/include -fPIC")
+if (${CMAKE_SYSTEM_NAME} MATCHES Darwin)
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/homebrew/include")
 endif ()
 
 # set default build to release with debug info. mimic'ed from RBDL project.

@@ -1,19 +1,22 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 PROJECT (SAI2-URDF)
-SET (PROJECT_VERSION 0.1.0)# TODO: minor version bump after examples are finished since we moved from sai2-common
+SET (PROJECT_VERSION 0.1.0)
 
 SET(CMAKE_CXX_FLAGS "-std=c++11 -I/usr/include -I/usr/local/include -fPIC")
+if (${CMAKE_SYSTEM_NAME} MATCHES Darwin)
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/opt/homebrew/include")
+endif ()
 
 # set default build to release with debug info. mimic'ed from RBDL project.
 IF(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-	MESSAGE(STATUS "Setting build type to 'RelWithDebInfo' as none was specified.")
+	MESSAGE(STATUS "Setting build type to 'Release' as none was specified.")
 	# Set the default build, and also the possible values of build type for cmake-gui
-	SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build." FORCE)
+	SET(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
 	SET_PROPERTY(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 ENDIF()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(ENABLE_DEBUG_PRINTS)
 endif()
 

@@ -10,13 +10,13 @@ endif ()
 
 # set default build to release with debug info. mimic'ed from RBDL project.
 IF(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-	MESSAGE(STATUS "Setting build type to 'RelWithDebInfo' as none was specified.")
+	MESSAGE(STATUS "Setting build type to 'Release' as none was specified.")
 	# Set the default build, and also the possible values of build type for cmake-gui
-	SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build." FORCE)
+	SET(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
 	SET_PROPERTY(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 ENDIF()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(ENABLE_DEBUG_PRINTS)
 endif()
 

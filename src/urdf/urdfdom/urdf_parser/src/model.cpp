@@ -118,7 +118,11 @@ my_shared_ptr<ModelInterface>  parseURDF(const std::string &xml_string)
 	model->m_numLinks++;
 
     try {
-      parseLink(*link, link_xml);
+      if(!parseLink(*link, link_xml)) {
+        logError("failed to parse link");
+        model.reset(0);
+        return model;
+      }
       if (model->getLink(link->name))
       {
         logError("link '%s' is not unique.", link->name.c_str());

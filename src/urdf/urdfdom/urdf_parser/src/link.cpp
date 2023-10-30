@@ -621,8 +621,17 @@ bool parseLink(Link &link, tinyxml2::XMLElement* config)
       return false;
     }
   }
-  
-  // Collision (optional)  
+
+  // Collision (optional)
+  // only accept one collision element per link
+  if (link.collision_array.size() > 1) {
+	logError(
+		"ERROR: Link [%s] has too many collision elements. Only one collision element "
+		"supported per link. Consider using fixed joints to have several "
+		"collision elements rigidly attached to one another",
+		link.name.c_str());
+	return false;
+  }
   // Assign the first collision to the .collision ptr, if it exists
   if (!link.collision_array.empty())
     link.collision = link.collision_array[0];

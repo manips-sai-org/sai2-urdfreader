@@ -18,3 +18,7 @@ from the base directory
 mkdir build
 cd build
 cmake .. && make -j8
+```
+
+## License
+Currently pending licensing. PLEASE DO NOT DISTRIBUTE.

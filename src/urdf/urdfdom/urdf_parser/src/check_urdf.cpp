@@ -38,7 +38,7 @@
 #include <iostream>
 #include <fstream>
 
-using namespace urdf;
+using namespace Sai2Urdfreader;
 
 void printTree(my_shared_ptr<const Link> link,int level = 0)
 {

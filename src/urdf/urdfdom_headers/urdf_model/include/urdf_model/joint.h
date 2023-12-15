@@ -49,7 +49,7 @@
 #include <urdf/urdfdom_headers/urdf_model/include/urdf_model/pose.h>
 
 
-namespace urdf{
+namespace Sai2Urdfreader{
 
 class Link;
 

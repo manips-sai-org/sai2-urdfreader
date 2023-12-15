@@ -43,7 +43,7 @@
 //#include <boost/algorithm/string.hpp>
 //#include <boost/lexical_cast.hpp>
 
-namespace urdf
+namespace Sai2Urdfreader
 {
 
 class Color

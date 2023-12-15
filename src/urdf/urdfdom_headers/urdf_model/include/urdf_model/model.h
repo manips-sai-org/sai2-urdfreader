@@ -44,7 +44,7 @@
 #include <stdio.h> //printf
 #include <urdf/urdfdom_headers/urdf_exception/include/urdf_exception/exception.h>
 
-namespace urdf {
+namespace Sai2Urdfreader {
 
 class ModelInterface
 {

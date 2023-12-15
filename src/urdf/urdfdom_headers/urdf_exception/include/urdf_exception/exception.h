@@ -39,7 +39,7 @@
 #include <string>
 #include <stdexcept>
 
-namespace urdf
+namespace Sai2Urdfreader
 {
 
 class ParseError: public std::runtime_error

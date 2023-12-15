@@ -15,6 +15,6 @@ int main(int argc, char** argv){
     xml_file.close();
 
 
-    urdf::parseURDF(xml_string);
+    Sai2Urdfreader::parseURDF(xml_string);
   }
 }

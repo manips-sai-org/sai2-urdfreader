@@ -43,7 +43,7 @@
 #include <tinyxml2.h>
 #include <console_bridge/console.h>
 
-namespace urdf{
+namespace Sai2Urdfreader{
 
 bool parseModelState(ModelState &ms, TiXmlElement* config)
 {

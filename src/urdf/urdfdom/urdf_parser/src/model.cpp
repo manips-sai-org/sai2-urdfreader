@@ -37,9 +37,9 @@
 #include <vector>
 #include "urdf/urdfdom/urdf_parser/include/urdf_parser/urdf_parser.h"
 #ifdef URDF_USE_CONSOLE_BRIDGE
-	#include <console_bridge/console.h>
+    #include <console_bridge/console.h>
 #else
-	#include "urdf/boost_replacement/printf_console.h"
+    #include "urdf/boost_replacement/printf_console.h"
 #endif
 
 namespace Sai2Urdfreader{
@@ -115,7 +115,7 @@ my_shared_ptr<ModelInterface>  parseURDF(const std::string &xml_string)
   {
     my_shared_ptr<Link> link;
     link.reset(new Link);
-	model->m_numLinks++;
+    model->m_numLinks++;
 
     try {
       if(!parseLink(*link, link_xml)) {
@@ -135,28 +135,30 @@ my_shared_ptr<ModelInterface>  parseURDF(const std::string &xml_string)
         logDebug("urdfdom: setting link '%s' material", link->name.c_str());
         if (link->visual)
         {
-          if (!link->visual->material_name.empty())
-          {
-            if (model->getMaterial(link->visual->material_name))
-            {
-              logDebug("urdfdom: setting link '%s' material to '%s'", link->name.c_str(),link->visual->material_name.c_str());
-              link->visual->material = model->getMaterial( link->visual->material_name.c_str() );
+            for(auto& visual : link->visual_array) {
+                if (!visual->material_name.empty())
+                {
+                    if (model->getMaterial(visual->material_name))
+                    {
+                    logDebug("urdfdom: setting link '%s' material to '%s'", link->name.c_str(),visual->material_name.c_str());
+                    visual->material = model->getMaterial( visual->material_name.c_str() );
+                    }
+                    else
+                    {
+                    if (visual->material)
+                    {
+                        logDebug("urdfdom: link '%s' material '%s' defined in Visual.", link->name.c_str(),visual->material_name.c_str());
+                        model->materials_.insert(make_pair(visual->material->name,visual->material));
+                    }
+                    else
+                    {
+                        logError("link '%s' material '%s' undefined.", link->name.c_str(),visual->material_name.c_str());
+                        model.reset(0);
+                        return model;
+                    }
+                    }
+                }
             }
-            else
-            {
-              if (link->visual->material)
-              {
-                logDebug("urdfdom: link '%s' material '%s' defined in Visual.", link->name.c_str(),link->visual->material_name.c_str());
-                model->materials_.insert(make_pair(link->visual->material->name,link->visual->material));
-              }
-              else
-              {
-                logError("link '%s' material '%s' undefined.", link->name.c_str(),link->visual->material_name.c_str());
-                model.reset(0);
-                return model;
-              }
-            }
-          }
         }
 
         model->links_.insert(make_pair(link->name,link));
@@ -180,7 +182,7 @@ my_shared_ptr<ModelInterface>  parseURDF(const std::string &xml_string)
   {
     my_shared_ptr<Joint> joint;
     joint.reset(new Joint);
-	model->m_numJoints++;
+    model->m_numJoints++;
 
     if (parseJoint(*joint, joint_xml))
     {
